@@ -1,0 +1,39 @@
+import { PublicKey } from "@solana/web3.js";
+
+export type CreateEvent = {
+  name: string;
+  symbol: string;
+  uri: string;
+  mint: PublicKey;
+  bondingCurve: PublicKey;
+  user: PublicKey;
+};
+
+export type TradeEvent = {
+  mint: PublicKey;
+  solAmount: bigint;
+  tokenAmount: bigint;
+  isBuy: boolean;
+  user: PublicKey;
+  timestamp: number;
+  virtualSolReserves: bigint;
+  virtualTokenReserves: bigint;
+  realSolReserves: bigint;
+  realTokenReserves: bigint;
+};
+
+export type CompleteEvent = {
+  user: PublicKey;
+  mint: PublicKey;
+  bondingCurve: PublicKey;
+  timestamp: number;
+};
+
+export type SetParamsEvent = {
+  feeRecipient: PublicKey;
+  initialVirtualTokenReserves: bigint;
+  initialVirtualSolReserves: bigint;
+  initialRealTokenReserves: bigint;
+  tokenTotalSupply: bigint;
+  feeBasisPoints: bigint;
+};

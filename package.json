@@ -1,0 +1,23 @@
+{
+  "name": "pumpdotfun-repumped-sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/D3AD-E/pumpdotfun-repumped-sdk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/D3AD-E/pumpdotfun-repumped-sdk/issues"
+  },
+  "homepage": "https://github.com/D3AD-E/pumpdotfun-repumped-sdk#readme",
+  "description": "",
+  "dependencies": {
+    "@coral-xyz/borsh": "^0.31.1",
+    "@solana/web3.js": "^1.98.2"
+  }
+}
