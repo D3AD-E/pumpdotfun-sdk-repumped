@@ -16,6 +16,7 @@ import {
   getCreatorVaultPda,
   getGlobalAccountPda,
   getMintAuthorityPDA,
+  getMetadataPDA,
 } from "../pda.js";
 import {
   DEFAULT_COMMITMENT,
@@ -246,15 +247,7 @@ export class TradeModule {
       true
     );
     const global = getGlobalAccountPda();
-    const metadataProgram = new PublicKey(MPL_TOKEN_METADATA_PROGRAM_ID);
-    const [metadata] = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("metadata"),
-        metadataProgram.toBuffer(),
-        mint.publicKey.toBuffer(),
-      ],
-      metadataProgram
-    );
+    const metadata = getMetadataPDA(mint.publicKey);
     const eventAuthority = getEventAuthorityPda();
 
     const ix = await this.sdk.program.methods

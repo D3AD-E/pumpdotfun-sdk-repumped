@@ -4,6 +4,8 @@ import {
   EVENT_AUTHORITY_SEED,
   BONDING_CURVE_SEED,
   MINT_AUTHORITY_SEED,
+  METADATA_SEED,
+  MPL_TOKEN_METADATA_PROGRAM_ID,
 } from "./pumpFun.consts.js";
 
 export function getCreatorVaultPda(creator: PublicKey): PublicKey {
@@ -39,4 +41,14 @@ export function getMintAuthorityPDA() {
     [Buffer.from(MINT_AUTHORITY_SEED)],
     this.sdk.program.programId
   )[0];
+}
+
+export function getMetadataPDA(mint: PublicKey): PublicKey {
+  const metadataProgram = new PublicKey(MPL_TOKEN_METADATA_PROGRAM_ID);
+
+  const [metadataPDA] = PublicKey.findProgramAddressSync(
+    [Buffer.from(METADATA_SEED), metadataProgram.toBuffer(), mint.toBuffer()],
+    metadataProgram
+  );
+  return metadataPDA;
 }
