@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "npm run build",
     "build": "rimraf dist/ && rollup -c --bundleConfigAsCjs",
-    "example": "tsx example/basic/index.ts"
+    "example": "npm run build && tsx example/index.ts"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,18 @@
     "@coral-xyz/borsh": "^0.31.1",
     "@solana/spl-token": "^0.4.13",
     "@solana/web3.js": "^1.98.2",
-    "bn.js": "^5.2.2"
+    "bn.js": "^5.2.2",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.3",
+    "@tsconfig/node20": "^20.1.6",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.44.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   }
 }

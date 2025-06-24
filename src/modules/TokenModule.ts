@@ -4,7 +4,6 @@ import {
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
 import { PublicKey, Transaction, Commitment } from "@solana/web3.js";
-import { getBondingCurvePDA, getGlobalAccountPda } from "../pda.js";
 import { DEFAULT_COMMITMENT } from "../pumpFun.consts.js";
 import { CreateTokenMetadata } from "../pumpFun.types.js";
 import { PumpFunSDK } from "../PumpFunSDK.js";
@@ -102,7 +101,7 @@ export class TokenModule {
     commitment: Commitment = DEFAULT_COMMITMENT
   ) {
     const tokenAccount = await this.sdk.connection.getAccountInfo(
-      getBondingCurvePDA(mint),
+      this.sdk.pda.getBondingCurvePDA(mint),
       commitment
     );
     if (!tokenAccount) {
@@ -112,7 +111,7 @@ export class TokenModule {
   }
 
   async getGlobalAccount(commitment: Commitment = DEFAULT_COMMITMENT) {
-    const globalAccountPDA = getGlobalAccountPda();
+    const globalAccountPDA = this.sdk.pda.getGlobalAccountPda();
 
     const tokenAccount = await this.sdk.connection.getAccountInfo(
       globalAccountPDA,

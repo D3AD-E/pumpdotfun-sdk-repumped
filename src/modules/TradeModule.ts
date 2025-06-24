@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import BN from "bn.js";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import {
   Keypair,
@@ -8,14 +8,7 @@ import {
   PublicKey,
 } from "@solana/web3.js";
 import { GlobalAccount } from "../globalAccount.js";
-import {
-  getBondingCurvePDA,
-  getEventAuthorityPda,
-  getCreatorVaultPda,
-  getGlobalAccountPda,
-  getMintAuthorityPDA,
-  getMetadataPDA,
-} from "../pda.js";
+
 import { DEFAULT_COMMITMENT, DEFAULT_FINALITY } from "../pumpFun.consts.js";
 import {
   CreateTokenMetadata,
@@ -169,7 +162,7 @@ export class TradeModule {
     tx: Transaction,
     commitment: Commitment
   ): Promise<void> {
-    const bondingCurve = getBondingCurvePDA(mint);
+    const bondingCurve = this.sdk.pda.getBondingCurvePDA(mint);
     const associatedBonding = await getAssociatedTokenAddress(
       mint,
       bondingCurve,
@@ -185,7 +178,7 @@ export class TradeModule {
         commitment
       );
 
-    const globalPda = getGlobalAccountPda();
+    const globalPda = this.sdk.pda.getGlobalAccountPda();
     const globalAccBuf = await this.sdk.connection.getAccountInfo(
       globalPda,
       commitment
@@ -198,9 +191,9 @@ export class TradeModule {
       bondingCurve,
       commitment
     );
-    const creatorVault = getCreatorVaultPda(bondingCreator);
+    const creatorVault = this.sdk.pda.getCreatorVaultPda(bondingCreator);
 
-    const eventAuthority = getEventAuthorityPda();
+    const eventAuthority = this.sdk.pda.getEventAuthorityPda();
 
     const ix = await this.sdk.program.methods
       .buy(new BN(amount.toString()), new BN(maxSolCost.toString()))
@@ -228,16 +221,16 @@ export class TradeModule {
     uri: string,
     mint: Keypair
   ): Promise<Transaction> {
-    const mintAuthority = getMintAuthorityPDA();
-    const bondingCurve = getBondingCurvePDA(mint.publicKey);
+    const mintAuthority = this.sdk.pda.getMintAuthorityPDA();
+    const bondingCurve = this.sdk.pda.getBondingCurvePDA(mint.publicKey);
     const associatedBonding = await getAssociatedTokenAddress(
       mint.publicKey,
       bondingCurve,
       true
     );
-    const global = getGlobalAccountPda();
-    const metadata = getMetadataPDA(mint.publicKey);
-    const eventAuthority = getEventAuthorityPda();
+    const global = this.sdk.pda.getGlobalAccountPda();
+    const metadata = this.sdk.pda.getMetadataPDA(mint.publicKey);
+    const eventAuthority = this.sdk.pda.getEventAuthorityPda();
 
     const ix = await this.sdk.program.methods
       .create(name, symbol, uri, creator)
@@ -264,7 +257,7 @@ export class TradeModule {
     tx: Transaction,
     commitment: Commitment
   ): Promise<void> {
-    const bondingCurve = getBondingCurvePDA(mint);
+    const bondingCurve = this.sdk.pda.getBondingCurvePDA(mint);
     const associatedBonding = await getAssociatedTokenAddress(
       mint,
       bondingCurve,
@@ -280,7 +273,7 @@ export class TradeModule {
         commitment
       );
 
-    const globalPda = getGlobalAccountPda();
+    const globalPda = this.sdk.pda.getGlobalAccountPda();
     const globalBuf = await this.sdk.connection.getAccountInfo(
       globalPda,
       commitment
@@ -291,9 +284,9 @@ export class TradeModule {
       bondingCurve,
       commitment
     );
-    const creatorVault = getCreatorVaultPda(bondingCreator);
+    const creatorVault = this.sdk.pda.getCreatorVaultPda(bondingCreator);
 
-    const eventAuthority = getEventAuthorityPda();
+    const eventAuthority = this.sdk.pda.getEventAuthorityPda();
 
     const ix = await this.sdk.program.methods
       .sell(new BN(tokenAmount.toString()), new BN(minSolOutput.toString()))

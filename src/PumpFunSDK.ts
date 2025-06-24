@@ -4,12 +4,14 @@ import { IDL } from "./IDL/index.js";
 import { EventModule } from "./modules/EventModule.js";
 import { TokenModule } from "./modules/TokenModule.js";
 import { TradeModule } from "./modules/TradeModule.js";
+import { PdaModule } from "./modules/PdaModule.js";
 
 export class PumpFunSDK {
   public program: Program<Idl>;
   public connection: Connection;
   public token: TokenModule;
   public trade: TradeModule;
+  public pda: PdaModule;
   public events: EventModule;
 
   constructor(provider?: Provider) {
@@ -20,5 +22,6 @@ export class PumpFunSDK {
     this.token = new TokenModule(this);
     this.trade = new TradeModule(this);
     this.events = new EventModule(this);
+    this.pda = new PdaModule(this);
   }
 }
