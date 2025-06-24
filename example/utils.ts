@@ -1,5 +1,5 @@
 import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes/index.js";
-import { Keypair } from "@solana/web3.js";
+import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 function parseSecretKey(v: string | undefined): number[] {
   if (!v) throw new Error("WALLET_PRIVATE_KEY missing");
   let parsed: unknown;
@@ -19,3 +19,21 @@ function parseSecretKey(v: string | undefined): number[] {
 export const wallet = Keypair.fromSecretKey(
   Buffer.from(parseSecretKey(process.env.WALLET_PRIVATE_KEY))
 );
+
+export async function getSPL(
+  conn: Connection,
+  mint: PublicKey,
+  owner: PublicKey
+) {
+  const ata = PublicKey.findProgramAddressSync(
+    [
+      owner.toBuffer(),
+      new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").toBuffer(),
+      mint.toBuffer(),
+    ],
+    new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL")
+  )[0];
+
+  const info = await conn.getTokenAccountBalance(ata).catch(() => null);
+  return info ? Number(info.value.amount) : 0;
+}

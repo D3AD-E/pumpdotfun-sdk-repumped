@@ -61,7 +61,8 @@ export class TradeModule {
         buyAmount,
         buyAmountWithSlippage,
         transaction,
-        commitment
+        commitment,
+        true
       );
     }
 
@@ -106,7 +107,8 @@ export class TradeModule {
       buyAmount,
       buyAmountWithSlippage,
       transaction,
-      commitment
+      commitment,
+      false
     );
 
     return await sendTx(
@@ -148,7 +150,8 @@ export class TradeModule {
       buyAmount,
       buyAmountWithSlippage,
       transaction,
-      commitment
+      commitment,
+      false
     );
 
     return transaction;
@@ -160,7 +163,8 @@ export class TradeModule {
     amount: bigint,
     maxSolCost: bigint,
     tx: Transaction,
-    commitment: Commitment
+    commitment: Commitment,
+    shouldUseBuyerAsBonding: boolean
   ): Promise<void> {
     const bondingCurve = this.sdk.pda.getBondingCurvePDA(mint);
     const associatedBonding = await getAssociatedTokenAddress(
@@ -187,11 +191,12 @@ export class TradeModule {
       globalAccBuf!.data
     ).feeRecipient;
 
-    const bondingCreator = await this.sdk.token.getBondingCurveCreator(
-      bondingCurve,
-      commitment
-    );
-    const creatorVault = this.sdk.pda.getCreatorVaultPda(bondingCreator);
+    const bondingCreator = shouldUseBuyerAsBonding
+      ? this.sdk.pda.getCreatorVaultPda(buyer)
+      : await this.sdk.token.getBondingCurveCreator(bondingCurve, commitment);
+    const creatorVault = shouldUseBuyerAsBonding
+      ? bondingCreator
+      : this.sdk.pda.getCreatorVaultPda(bondingCreator);
 
     const eventAuthority = this.sdk.pda.getEventAuthorityPda();
 
