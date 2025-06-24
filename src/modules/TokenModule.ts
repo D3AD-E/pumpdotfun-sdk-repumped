@@ -3,28 +3,9 @@ import {
   getAccount,
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
-import {
-  PublicKey,
-  Keypair,
-  TransactionInstruction,
-  Transaction,
-  Commitment,
-} from "@solana/web3.js";
-import {
-  getBondingCurvePDA,
-  getGlobalAccountPda,
-  getEventAuthorityPda,
-  getMintAuthorityPDA,
-} from "../pda.js";
-import {
-  MPL_TOKEN_METADATA_PROGRAM_ID,
-  METADATA_SEED,
-  MINT_AUTHORITY_SEED,
-  SYSTEM_PROGRAM_ID,
-  TOKEN_PROGRAM_ID,
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  DEFAULT_COMMITMENT,
-} from "../pumpFun.consts.js";
+import { PublicKey, Transaction, Commitment } from "@solana/web3.js";
+import { getBondingCurvePDA, getGlobalAccountPda } from "../pda.js";
+import { DEFAULT_COMMITMENT } from "../pumpFun.consts.js";
 import { CreateTokenMetadata } from "../pumpFun.types.js";
 import { PumpFunSDK } from "../PumpFunSDK.js";
 import { BondingCurveAccount } from "../BondingCurveAccount.js";

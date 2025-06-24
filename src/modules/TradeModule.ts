@@ -6,9 +6,7 @@ import {
   Finality,
   Transaction,
   PublicKey,
-  TransactionInstruction,
 } from "@solana/web3.js";
-import { BondingCurveAccount } from "../BondingCurveAccount.js";
 import { GlobalAccount } from "../globalAccount.js";
 import {
   getBondingCurvePDA,
@@ -18,16 +16,7 @@ import {
   getMintAuthorityPDA,
   getMetadataPDA,
 } from "../pda.js";
-import {
-  DEFAULT_COMMITMENT,
-  DEFAULT_FINALITY,
-  MPL_TOKEN_METADATA_PROGRAM_ID,
-  METADATA_SEED,
-  MINT_AUTHORITY_SEED,
-  SYSTEM_PROGRAM_ID,
-  TOKEN_PROGRAM_ID,
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-} from "../pumpFun.consts.js";
+import { DEFAULT_COMMITMENT, DEFAULT_FINALITY } from "../pumpFun.consts.js";
 import {
   CreateTokenMetadata,
   PriorityFee,
