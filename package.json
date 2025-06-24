@@ -17,6 +17,11 @@
   "bugs": {
     "url": "https://github.com/D3AD-E/pumpdotfun-repumped-sdk/issues"
   },
+  "keywords": [
+    "pumpdotfun",
+    "sdk",
+    "solana"
+  ],
   "homepage": "https://github.com/D3AD-E/pumpdotfun-repumped-sdk#readme",
   "description": "",
   "dependencies": {
