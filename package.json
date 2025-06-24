@@ -1,9 +1,12 @@
 {
   "name": "pumpdotfun-repumped-sdk",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "npm run build",
+    "build": "rimraf dist/ && rollup -c --bundleConfigAsCjs",
+    "example": "tsx example/basic/index.ts"
   },
   "repository": {
     "type": "git",
@@ -17,7 +20,11 @@
   "homepage": "https://github.com/D3AD-E/pumpdotfun-repumped-sdk#readme",
   "description": "",
   "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
+    "@coral-xyz/anchor-cli": "^0.31.2",
     "@coral-xyz/borsh": "^0.31.1",
-    "@solana/web3.js": "^1.98.2"
+    "@solana/spl-token": "^0.4.13",
+    "@solana/web3.js": "^1.98.2",
+    "bn.js": "^5.2.2"
   }
 }
