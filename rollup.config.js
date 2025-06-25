@@ -2,12 +2,15 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
+import { builtinModules } from "module";
 
+const nodeBuiltins = builtinModules;
 const external = [
   "@coral-xyz/borsh",
   "@solana/web3.js",
   "@solana/spl-token",
   "@coral-xyz/anchor",
+  ...nodeBuiltins,
 ];
 
 const plugins = [
