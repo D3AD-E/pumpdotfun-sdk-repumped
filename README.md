@@ -1,6 +1,6 @@
 # pumpdotfun-repumped-sdk
 
-> High-level TypeScript SDK for [Pump Fun](https://pump.fun) Fixed and reworked https://github.com/rckprtr/pumpdotfun-sdk. Fixed buy, sell and create functions. Also added support for new events.
+> High-level TypeScript SDK for [Pump Fun](https://pump.fun) Fixed and reworked https://github.com/rckprtr/pumpdotfun-sdk. Fixed buy, sell and create functions. Also added support for new events. Added jito support for bundle sending.
 > Works on **devnet** (demo below) and **mainnet-beta**.  
 > Bundled via Rollup – ESM & CJS builds in **`dist/`**.
 
