@@ -1,4 +1,4 @@
-import { VersionedTransactionResponse } from "@solana/web3.js";
+import { Keypair, VersionedTransactionResponse } from "@solana/web3.js";
 
 export type CreateTokenMetadata = {
   name: string;
@@ -18,5 +18,16 @@ export type TransactionResult = {
   signature?: string;
   error?: unknown;
   results?: VersionedTransactionResponse;
+  success: boolean;
+};
+
+export type PumpOptions = {
+  jitoUrl: string;
+  authKeypair: Keypair;
+};
+
+export type JitoResult = {
+  bundleId?: string;
+  error?: unknown;
   success: boolean;
 };

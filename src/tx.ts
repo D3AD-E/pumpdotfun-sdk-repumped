@@ -23,29 +23,14 @@ export async function sendTx(
   commitment: Commitment = DEFAULT_COMMITMENT,
   finality: Finality = DEFAULT_FINALITY
 ): Promise<TransactionResult> {
-  let newTx = new Transaction();
-
-  if (priorityFees) {
-    const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
-      units: priorityFees.unitLimit,
-    });
-
-    const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
-      microLamports: priorityFees.unitPrice,
-    });
-    newTx.add(modifyComputeUnits);
-    newTx.add(addPriorityFee);
-  }
-
-  newTx.add(tx);
-
-  let versionedTx = await buildVersionedTx(
+  let versionedTx = await buildSignedTx(
+    priorityFees,
+    tx,
     connection,
     payer,
-    newTx,
-    commitment
+    commitment,
+    signers
   );
-  versionedTx.sign(signers);
 
   try {
     const sig = await connection.sendTransaction(versionedTx, {
@@ -68,7 +53,7 @@ export async function sendTx(
   } catch (e) {
     if (e instanceof SendTransactionError) {
       let ste = e as SendTransactionError;
-      console.log("SendTransactionError" + (await ste.getLogs(connection)));
+      console.log("SendTransactionError" + ste.logs);
     } else {
       console.error(e);
     }
@@ -117,3 +102,37 @@ export const getTxDetails = async (
     commitment: finality,
   });
 };
+
+export async function buildSignedTx(
+  priorityFees: PriorityFee | undefined,
+  tx: Transaction,
+  connection: Connection,
+  payer: PublicKey,
+  commitment: Commitment,
+  signers: Keypair[]
+) {
+  let newTx = new Transaction();
+
+  if (priorityFees) {
+    const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
+      units: priorityFees.unitLimit,
+    });
+
+    const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
+      microLamports: priorityFees.unitPrice,
+    });
+    newTx.add(modifyComputeUnits);
+    newTx.add(addPriorityFee);
+  }
+
+  newTx.add(tx);
+
+  let versionedTx = await buildVersionedTx(
+    connection,
+    payer,
+    newTx,
+    commitment
+  );
+  versionedTx.sign(signers);
+  return versionedTx;
+}

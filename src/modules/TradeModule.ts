@@ -157,7 +157,7 @@ export class TradeModule {
     return transaction;
   }
 
-  private async buildBuyIx(
+  async buildBuyIx(
     buyer: PublicKey,
     mint: PublicKey,
     amount: bigint,
@@ -254,7 +254,7 @@ export class TradeModule {
     return new Transaction().add(ix);
   }
 
-  private async buildSellIx(
+  async buildSellIx(
     seller: PublicKey,
     mint: PublicKey,
     tokenAmount: bigint,
