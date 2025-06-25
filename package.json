@@ -1,6 +1,6 @@
 {
   "name": "pumpdotfun-repumped-sdk",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Unofficial TypeScript SDK for Pump Fun (Solana) - create, buy, sell and listen to events.",
   "author": "D3AD-E <evg.gordi@gmail.com>",
   "license": "MIT",
