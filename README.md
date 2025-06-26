@@ -22,8 +22,6 @@
 
 ## 📦 Install
 
-TODO npm
-
 ```bash
 npm install pumpdotfun-repumped-sdk
 ```
