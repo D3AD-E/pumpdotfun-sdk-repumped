@@ -28,7 +28,7 @@ npm install pumpdotfun-repumped-sdk
 
 ---
 
-## 🔨 Quick Start (Devnet)
+## 🔨 Quick Start
 
 ```ts
 import "dotenv/config";
