@@ -24,15 +24,6 @@
 
 ---
 
-## Contents
-- [Features](#features)
-- [Install](#install)
-- [Quick Start](#quick-start)
-- [Advanced Examples](#advanced-examples)
-- [Ping Explained](#tip-what-ping-does)
-- [Supported Relay Regions](#supported-relay-regions)
-
-
 
 ## ✨ Features
 
