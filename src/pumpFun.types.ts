@@ -22,8 +22,14 @@ export type TransactionResult = {
 };
 
 export type PumpOptions = {
-  jitoUrl: string;
-  authKeypair: Keypair;
+  jitoUrl?: string;
+  authKeypair?: Keypair;
+  providerRegion?: Region;
+  shouldKeepAlive?: boolean;
+  astraKey?: string;
+  slotKey?: string;
+  nextBlockKey?: string;
+  nodeOneKey?: string;
 };
 
 export type JitoResult = {
@@ -31,3 +37,12 @@ export type JitoResult = {
   error?: unknown;
   success: boolean;
 };
+export type HostKey = "slot" | "node" | "nextBlock" | "astra";
+
+export enum Region {
+  Frankfurt = "fra",
+  NY = "ny",
+  Tokyo = "tokyo",
+  Amsterdam = "ams",
+  LosAngeles = "la",
+}
