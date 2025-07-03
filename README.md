@@ -4,7 +4,7 @@
 > Fixed and reworked version of [rckprtr/pumpdotfun-sdk](https://github.com/rckprtr/pumpdotfun-sdk).  
 > ✅ Fixed buy/sell/create  
 > ✅ Added support for new events  
-> ✅ Added Jito and alternative relay support (Astra, Slot, NodeOne, NextBlock)  
+> ✅ Added Jito and alternative relay support (Astra, 0Slot, NodeOne, NextBlock)  
 > ✅ Works on **devnet** and **mainnet-beta**  
 > ✅ ESM & CJS builds via Rollup in **`dist/`**
 
@@ -21,7 +21,7 @@
 | **`EventModule`**     | Typed Anchor event listeners with automatic deserialization                                         |
 | **`JitoModule`**      | Submit Jito bundles for `buy`/`sell`. Requires `jitoUrl` and `authKeypair` in SDK options           |
 | **`AstraModule`**     | Sends `buy`/`sell` transactions via Astra relays. Adds tip transfers + optional `ping()` keep-alive |
-| **`SlotModule`**      | Similar to Astra; optimized for Slot relays with `buy()` and `ping()`                               |
+| **`SlotModule`**      | Similar to Astra; optimized for 0Slot relays with `buy()` and `ping()`                              |
 | **`NextBlockModule`** | Similar to Astra; optimized for NextBlock relays with `buy()` and `ping()`                          |
 | **`NodeOneModule`**   | Similar to Astra; optimized for NodeOne relays with `buy()` and `ping()`                            |
 | **IDL exports**       | Full `IDL` JSON and `type PumpFun` helper                                                           |
@@ -131,7 +131,7 @@ await sdk.jito!.buyJito(
 
 ---
 
-### 🛰️ Buy with **Slot**, **NodeOne**, **Astra**, or **NextBlock**
+### 🛰️ Buy with **0Slot**, **NodeOne**, **Astra**, or **NextBlock**
 
 > These modules use upstream relayers to speed up TX submission.  
 > They support periodic `ping()` to keep-alive HTTPS connection and reduce TLS overhead.
@@ -180,7 +180,7 @@ await sdk.slot!.ping();
 
 Each relay provider supports a defined set of regions for optimal latency. Below are the currently supported regions per provider:
 
-### 🛰️ Slot (`0slot.trade`)
+### 🛰️ 0Slot (`0slot.trade`)
 
 - Frankfurt
 - New York

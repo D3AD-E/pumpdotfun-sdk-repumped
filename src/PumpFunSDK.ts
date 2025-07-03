@@ -49,7 +49,7 @@ export class PumpFunSDK {
     }
     if (options?.slotKey) {
       if (!options.providerRegion) {
-        throw new Error("Provider region is required for Slot module.");
+        throw new Error("Provider region is required for 0Slot module.");
       }
       this.slot = new SlotModule(this, options.providerRegion, options.slotKey);
     }
