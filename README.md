@@ -1,6 +1,14 @@
-# pumpdotfun-repumped-sdk
+<h3 align="center">🚀 Pumpdotfun-Repumped-SDK</h3>
+<p align="center">
+  <b>High-level TypeScript SDK for Pump Fun</b><br/>
+  Create · Buy · Sell · Relay · Jito Bundles
+</p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/pumpdotfun-repumped-sdk"><img alt="npm" src="https://img.shields.io/npm/v/pumpdotfun-repumped-sdk?color=cb3837&logo=npm"></a>
+  <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+</p>
 
-> High-level TypeScript SDK for [Pump Fun](https://pump.fun).  
+
 > Fixed and reworked version of [rckprtr/pumpdotfun-sdk](https://github.com/rckprtr/pumpdotfun-sdk).  
 > ✅ Fixed buy/sell/create  
 > ✅ Added support for new events  
@@ -9,6 +17,22 @@
 > ✅ ESM & CJS builds via Rollup in **`dist/`**
 
 ---
+
+<p align="center">
+  ⭐️ If you find this project useful, please <a href="https://github.com/D3AD-E/pumpdotfun-repumped-sdk/stargazers">star&nbsp;the&nbsp;repo</a> — it helps a lot! ⭐️
+</p>
+
+---
+
+## Contents
+- [Features](#features)
+- [Install](#install)
+- [Quick Start](#quick-start)
+- [Advanced Examples](#advanced-examples)
+- [Ping Explained](#tip-what-ping-does)
+- [Supported Relay Regions](#supported-relay-regions)
+
+
 
 ## ✨ Features
 
@@ -180,32 +204,22 @@ await sdk.slot!.ping();
 
 Each relay provider supports a defined set of regions for optimal latency. Below are the currently supported regions per provider:
 
-### 🛰️ 0Slot (`0slot.trade`)
-
-- Frankfurt
-- New York
-- Tokyo
-- Amsterdam
-- Los Angeles
-
-### 💠 Astra (`astralane.io`)
-
-- Frankfurt
-- New York
-- Tokyo
-- Amsterdam
-
-### 🧱 NodeOne (`node1.me`)
-
-- New York
-- Tokyo
-- Amsterdam
-- Frankfurt
-
-### ⬛ NextBlock (`nextblock.io`)
-
-- Tokyo
-- Frankfurt
-- New York
+```text
+Slot       📍 Frankfurt • New York • Tokyo • Amsterdam • Los Angeles
+Astra      📍 Frankfurt • New York • Tokyo • Amsterdam
+NodeOne    📍 New York • Tokyo • Amsterdam • Frankfurt
+NextBlock  📍 Tokyo • Frankfurt • New York
+```
 
 > You must specify `providerRegion` in `PumpFunSDK` options to select which regional relay to use.
+
+## ⚠️ Disclaimer
+
+This software is provided **“as is,”** without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement.  
+In no event shall the authors or copyright holders be liable for any claim, damages, or other liability—whether in an action of contract, tort, or otherwise—arising from, out of, or in connection with the software or the use or other dealings in the software.
+
+> Use at your own risk.  
+> The authors take no responsibility for any harm or damage caused by the use of this software.  
+> Users are responsible for ensuring the suitability and safety of this software for their specific use cases.
+
+By using this software, **you acknowledge that you have read, understood, and agree to this disclaimer.**
