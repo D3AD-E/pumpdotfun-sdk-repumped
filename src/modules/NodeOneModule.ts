@@ -16,24 +16,28 @@ import {
 import { buildSignedTx } from "../tx.js";
 import AgentRegistry from "../AgentRegistry.js";
 
-export class SlotModule {
+export class NodeOneModule {
   private key: string;
   constructor(private sdk: PumpFunSDK, region: Region, key: string) {
-    AgentRegistry.registerInConfig("slot", region);
+    AgentRegistry.registerInConfig("node", region);
     this.key = key;
   }
 
-  SLOT_ACCOUNTS = [
-    new PublicKey("Eb2KpSC8uMt9GmzyAEm5Eb1AAAgTjRaXWFjKyFXHZxF3"),
-    new PublicKey("FCjUJZ1qozm1e8romw216qyfQMaaWKxWsuySnumVCCNe"),
-    new PublicKey("ENxTEjSQ1YabmUpXAdCgevnHQ9MHdLv8tzFiuiYJqa13"),
-    new PublicKey("6rYLG55Q9RpsPGvqdPNJs4z5WTxJVatMB8zV3WJhs5EK"),
-    new PublicKey("Cix2bHfqPcKcM233mzxbLk14kSggUUiz2A87fJtGivXr"),
+  NODE_ONE_ACCOUNTS = [
+    new PublicKey("node1PqAa3BWWzUnTHVbw8NJHC874zn9ngAkXjgWEej"),
+    new PublicKey("node1UzzTxAAeBTpfZkQPJXBAqixsbdth11ba1NXLBG"),
+    new PublicKey("node1Qm1bV4fwYnCurP8otJ9s5yrkPq7SPZ5uhj3Tsv"),
+    new PublicKey("node1PUber6SFmSQgvf2ECmXsHP5o3boRSGhvJyPMX1"),
+    new PublicKey("node1AyMbeqiVN6eoQzEAwCA6Pk826hrdqdAHR7cdJ3"),
+    new PublicKey("node1YtWCoTwwVYTFLfS19zquRQzYX332hs1HEuRBjC"),
+    new PublicKey("node1FdMPnJBN7QTuhzNw3VS823nxFuDTizrrbcEqzp"),
   ];
 
   private getRandomAccount() {
-    const randomIndex = Math.floor(Math.random() * this.SLOT_ACCOUNTS.length);
-    return this.SLOT_ACCOUNTS[randomIndex];
+    const randomIndex = Math.floor(
+      Math.random() * this.NODE_ONE_ACCOUNTS.length
+    );
+    return this.NODE_ONE_ACCOUNTS[randomIndex];
   }
 
   async buy(
@@ -151,13 +155,8 @@ export class SlotModule {
   }
 
   async ping() {
-    return await AgentRegistry.callUpstream("slot", `/?api-key=${this.key}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Content-Length": Buffer.byteLength(getHealthBody),
-      },
-      body: getHealthBody,
+    return await AgentRegistry.callUpstream("node", "/ping", {
+      method: "GET",
     });
   }
 
@@ -171,11 +170,12 @@ export class SlotModule {
       method: "sendTransaction",
       params: [tx, { encoding: "base64", skipPreflight: true, maxRetries: 0 }],
     });
-    return await AgentRegistry.callUpstream("slot", `/?api-key=${this.key}`, {
+    return await AgentRegistry.callUpstream("node", `/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(txbody),
+        "api-key": this.key,
       },
       body: txbody,
     });

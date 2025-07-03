@@ -16,24 +16,23 @@ import {
 import { buildSignedTx } from "../tx.js";
 import AgentRegistry from "../AgentRegistry.js";
 
-export class SlotModule {
+export class AstraModule {
   private key: string;
   constructor(private sdk: PumpFunSDK, region: Region, key: string) {
-    AgentRegistry.registerInConfig("slot", region);
+    AgentRegistry.registerInConfig("astra", region);
     this.key = key;
   }
 
-  SLOT_ACCOUNTS = [
-    new PublicKey("Eb2KpSC8uMt9GmzyAEm5Eb1AAAgTjRaXWFjKyFXHZxF3"),
-    new PublicKey("FCjUJZ1qozm1e8romw216qyfQMaaWKxWsuySnumVCCNe"),
-    new PublicKey("ENxTEjSQ1YabmUpXAdCgevnHQ9MHdLv8tzFiuiYJqa13"),
-    new PublicKey("6rYLG55Q9RpsPGvqdPNJs4z5WTxJVatMB8zV3WJhs5EK"),
-    new PublicKey("Cix2bHfqPcKcM233mzxbLk14kSggUUiz2A87fJtGivXr"),
+  ASTRA_ACCOUNTS = [
+    new PublicKey("astrazznxsGUhWShqgNtAdfrzP2G83DzcWVJDxwV9bF"),
+    new PublicKey("astra4uejePWneqNaJKuFFA8oonqCE1sqF6b45kDMZm"),
+    new PublicKey("astra9xWY93QyfG6yM8zwsKsRodscjQ2uU2HKNL5prk"),
+    new PublicKey("astraRVUuTHjpwEVvNBeQEgwYx9w9CFyfxjYoobCZhL"),
   ];
 
   private getRandomAccount() {
-    const randomIndex = Math.floor(Math.random() * this.SLOT_ACCOUNTS.length);
-    return this.SLOT_ACCOUNTS[randomIndex];
+    const randomIndex = Math.floor(Math.random() * this.ASTRA_ACCOUNTS.length);
+    return this.ASTRA_ACCOUNTS[randomIndex];
   }
 
   async buy(
@@ -151,14 +150,18 @@ export class SlotModule {
   }
 
   async ping() {
-    return await AgentRegistry.callUpstream("slot", `/?api-key=${this.key}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Content-Length": Buffer.byteLength(getHealthBody),
-      },
-      body: getHealthBody,
-    });
+    return await AgentRegistry.callUpstream(
+      "astra",
+      `/iris?api-key=${this.key}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(getHealthBody),
+        },
+        body: getHealthBody,
+      }
+    );
   }
 
   async sendTransaction(vertionedTx: VersionedTransaction) {
@@ -171,13 +174,17 @@ export class SlotModule {
       method: "sendTransaction",
       params: [tx, { encoding: "base64", skipPreflight: true, maxRetries: 0 }],
     });
-    return await AgentRegistry.callUpstream("slot", `/?api-key=${this.key}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Content-Length": Buffer.byteLength(txbody),
-      },
-      body: txbody,
-    });
+    return await AgentRegistry.callUpstream(
+      "astra",
+      `/iris?api-key=${this.key}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(txbody),
+        },
+        body: txbody,
+      }
+    );
   }
 }

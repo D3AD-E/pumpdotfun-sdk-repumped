@@ -16,24 +16,29 @@ import {
 import { buildSignedTx } from "../tx.js";
 import AgentRegistry from "../AgentRegistry.js";
 
-export class SlotModule {
+export class NextBlockModule {
   private key: string;
   constructor(private sdk: PumpFunSDK, region: Region, key: string) {
-    AgentRegistry.registerInConfig("slot", region);
+    AgentRegistry.registerInConfig("nextBlock", region);
     this.key = key;
   }
 
-  SLOT_ACCOUNTS = [
-    new PublicKey("Eb2KpSC8uMt9GmzyAEm5Eb1AAAgTjRaXWFjKyFXHZxF3"),
-    new PublicKey("FCjUJZ1qozm1e8romw216qyfQMaaWKxWsuySnumVCCNe"),
-    new PublicKey("ENxTEjSQ1YabmUpXAdCgevnHQ9MHdLv8tzFiuiYJqa13"),
-    new PublicKey("6rYLG55Q9RpsPGvqdPNJs4z5WTxJVatMB8zV3WJhs5EK"),
-    new PublicKey("Cix2bHfqPcKcM233mzxbLk14kSggUUiz2A87fJtGivXr"),
+  NEXT_BLOCK_ACCOUNTS = [
+    new PublicKey("NextbLoCkVtMGcV47JzewQdvBpLqT9TxQFozQkN98pE"),
+    new PublicKey("NexTbLoCkWykbLuB1NkjXgFWkX9oAtcoagQegygXXA2"),
+    new PublicKey("NeXTBLoCKs9F1y5PJS9CKrFNNLU1keHW71rfh7KgA1X"),
+    new PublicKey("NexTBLockJYZ7QD7p2byrUa6df8ndV2WSd8GkbWqfbb"),
+    new PublicKey("neXtBLock1LeC67jYd1QdAa32kbVeubsfPNTJC1V5At"),
+    new PublicKey("nEXTBLockYgngeRmRrjDV31mGSekVPqZoMGhQEZtPVG"),
+    new PublicKey("NEXTbLoCkB51HpLBLojQfpyVAMorm3zzKg7w9NFdqid"),
+    new PublicKey("nextBLoCkPMgmG8ZgJtABeScP35qLa2AMCNKntAP7Xc"),
   ];
 
   private getRandomAccount() {
-    const randomIndex = Math.floor(Math.random() * this.SLOT_ACCOUNTS.length);
-    return this.SLOT_ACCOUNTS[randomIndex];
+    const randomIndex = Math.floor(
+      Math.random() * this.NEXT_BLOCK_ACCOUNTS.length
+    );
+    return this.NEXT_BLOCK_ACCOUNTS[randomIndex];
   }
 
   async buy(
@@ -151,31 +156,24 @@ export class SlotModule {
   }
 
   async ping() {
-    return await AgentRegistry.callUpstream("slot", `/?api-key=${this.key}`, {
-      method: "POST",
+    return await AgentRegistry.callUpstream("nextBlock", "/api/v2/submit", {
+      method: "GET",
       headers: {
-        "Content-Type": "application/json",
-        "Content-Length": Buffer.byteLength(getHealthBody),
+        Authorization: this.key,
       },
-      body: getHealthBody,
     });
   }
 
   async sendTransaction(vertionedTx: VersionedTransaction) {
     const serealized = vertionedTx.serialize();
     const tx = Buffer.from(serealized).toString("base64");
-    const UUID = crypto.randomUUID();
-    const txbody = JSON.stringify({
-      jsonrpc: "2.0",
-      id: UUID,
-      method: "sendTransaction",
-      params: [tx, { encoding: "base64", skipPreflight: true, maxRetries: 0 }],
-    });
-    return await AgentRegistry.callUpstream("slot", `/?api-key=${this.key}`, {
+    const txbody = JSON.stringify({ transaction: { content: tx } });
+    return await AgentRegistry.callUpstream("nextBlock", `/api/v2/submit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Content-Length": Buffer.byteLength(txbody),
+        Authorization: this.key,
       },
       body: txbody,
     });
