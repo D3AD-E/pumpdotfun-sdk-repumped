@@ -1,6 +1,6 @@
 {
   "name": "pumpdotfun-repumped-sdk",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Modern TypeScript SDK for Pump.fun — create, buy, sell tokens with support for Jito bundles and multiple relayer integrations. Rebuilt and fixed fork of pumpdotfun-sdk.",
   "author": "D3AD-E <evg.gordi@gmail.com>",
   "license": "MIT",
@@ -67,20 +67,16 @@
   "keywords": [
     "pump.fun",
     "pumpfun",
+    "pumpdotfun",
     "solana",
+    "pumpdotfunsdk",
     "sdk",
     "token",
     "jito",
-    "relayer",
     "web3",
-    "anchor",
     "create",
     "buy",
     "sell",
-    "nextblock",
-    "astra",
-    "0slot",
-    "nodeone",
     "trading"
   ]
 }
