@@ -1,6 +1,6 @@
-<h3 align="center">🚀 Pumpdotfun-Repumped-SDK</h3>
+<h3 align="center">Pumpdotfun SDK Repumped</h3>
 <p align="center">
-  <b>High-level TypeScript SDK for Pump Fun</b><br/>
+  <b>TypeScript SDK for Pump Fun</b><br/>
   Create · Buy · Sell · Relay · Jito Bundles
 </p>
 <p align="center">
