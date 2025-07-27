@@ -1,7 +1,7 @@
 {
   "name": "pumpdotfun-sdk-repumped",
-  "version": "1.2.3",
-  "description": "TypeScript SDK for Pump.fun — create, buy, sell tokens with support for Jito bundles and multiple relayer integrations. Rebuilt and fixed pumpdotfun-sdk.",
+  "version": "1.2.4",
+  "description": "Pumpfun SDK — create, buy, sell tokens with support for Jito bundles and multiple relayer integrations. Rebuilt and fixed pumpdotfun-sdk.",
   "author": "D3AD-E <evg.gordi@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -40,7 +40,6 @@
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1",
-    "@coral-xyz/borsh": "^0.31.1",
     "@solana/spl-token": "^0.4.13",
     "@solana/web3.js": "^1.98.2",
     "bn.js": "^5.2.2",
@@ -49,6 +48,7 @@
     "jito-ts": "^4.2.0"
   },
   "devDependencies": {
+    "@coral-xyz/borsh": "^0.31.1",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",

@@ -5,13 +5,16 @@ import json from "@rollup/plugin-json";
 import { builtinModules } from "module";
 
 const nodeBuiltins = builtinModules;
-const external = [
-  "@coral-xyz/borsh",
-  "@solana/web3.js",
-  "@solana/spl-token",
-  "@coral-xyz/anchor",
-  ...nodeBuiltins,
-];
+const external = (id) =>
+  [
+    "@coral-xyz/borsh",
+    "@solana/web3.js",
+    "@solana/spl-token",
+    "@coral-xyz/anchor",
+    "jito-ts",
+    ...nodeBuiltins,
+  ].some((pkg) => id === pkg || id.startsWith(`${pkg}/`)) ||
+  builtinModules.includes(id);
 
 const plugins = [
   commonjs(),
@@ -89,34 +92,6 @@ export default [
       typescript({
         tsconfig: "./tsconfig.base.json",
         outDir: "./dist/browser",
-        outputToFilesystem: false,
-        compilerOptions: {
-          module: "ES2022",
-          moduleResolution: "bundler",
-        },
-      }),
-    ],
-    external,
-  },
-  // Browser build with external bundle
-  {
-    input: "src/index.ts",
-    output: {
-      file: "dist/browser/with-external/index.js",
-      format: "es",
-      sourcemap: true,
-    },
-    plugins: [
-      commonjs(),
-      json(),
-      nodeResolve({
-        browser: true,
-        extensions: [".js", ".ts"],
-        preferBuiltins: false,
-      }),
-      typescript({
-        tsconfig: "./tsconfig.base.json",
-        outDir: "./dist/browser/with-external",
         outputToFilesystem: false,
         compilerOptions: {
           module: "ES2022",
