@@ -6,7 +6,9 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/pumpdotfun-repumped-sdk"><img alt="npm" src="https://img.shields.io/npm/v/pumpdotfun-repumped-sdk?color=cb3837&logo=npm"></a>
   <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+  <img alt="visitors" src="https://visitor-badge.laobi.icu/badge?page_id=d3ad.pumpdotfun-repumped-sdk" />
 </p>
+
 
 
 > Fixed and reworked version of [rckprtr/pumpdotfun-sdk](https://github.com/rckprtr/pumpdotfun-sdk).  
