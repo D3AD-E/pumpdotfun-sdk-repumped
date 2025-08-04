@@ -8,6 +8,253 @@
   },
   "instructions": [
     {
+      "name": "admin_set_creator",
+      "docs": [
+        "Allows Global::admin_set_creator_authority to override the bonding curve creator"
+      ],
+      "discriminator": [69, 25, 171, 142, 57, 239, 13, 4],
+      "accounts": [
+        {
+          "name": "admin_set_creator_authority",
+          "signer": true,
+          "relations": ["global"]
+        },
+        {
+          "name": "global",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [103, 108, 111, 98, 97, 108]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "creator",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "admin_set_idl_authority",
+      "discriminator": [8, 217, 96, 231, 144, 104, 192, 5],
+      "accounts": [
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": ["global"]
+        },
+        {
+          "name": "global",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [103, 108, 111, 98, 97, 108]
+              }
+            ]
+          }
+        },
+        {
+          "name": "idl_account",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "program_signer",
+          "pda": {
+            "seeds": []
+          }
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "idl_authority",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "admin_update_token_incentives",
+      "discriminator": [209, 11, 115, 87, 213, 23, 124, 204],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": ["global"]
+        },
+        {
+          "name": "global",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [103, 108, 111, 98, 97, 108]
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_volume_accumulator",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103, 108, 111, 98, 97, 108, 95, 118, 111, 108, 117, 109, 101,
+                  95, 97, 99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint"
+        },
+        {
+          "name": "global_incentive_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "global_volume_accumulator"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": [
+        {
+          "name": "start_time",
+          "type": "i64"
+        },
+        {
+          "name": "end_time",
+          "type": "i64"
+        },
+        {
+          "name": "seconds_in_a_day",
+          "type": "i64"
+        },
+        {
+          "name": "day_number",
+          "type": "u64"
+        },
+        {
+          "name": "pump_token_supply_per_day",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "buy",
       "docs": ["Buys tokens from a bonding curve."],
       "discriminator": [102, 6, 61, 18, 1, 218, 235, 234],
@@ -37,7 +284,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101]
+                "value": [
+                  98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101
+                ]
               },
               {
                 "kind": "account",
@@ -58,8 +307,9 @@
               {
                 "kind": "const",
                 "value": [
-                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206, 235, 121, 172, 28, 180, 133, 237, 95,
-                  91, 55, 145, 58, 140, 245, 133, 126, 255, 0, 169
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
                 ]
               },
               {
@@ -70,8 +320,9 @@
             "program": {
               "kind": "const",
               "value": [
-                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142, 13, 131, 11, 90, 19, 153, 218, 255, 16,
-                132, 4, 142, 123, 216, 219, 233, 248, 89
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
               ]
             }
           }
@@ -100,7 +351,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 114, 101, 97, 116, 111, 114, 45, 118, 97, 117, 108, 116]
+                "value": [
+                  99, 114, 101, 97, 116, 111, 114, 45, 118, 97, 117, 108, 116
+                ]
               },
               {
                 "kind": "account",
@@ -116,13 +369,50 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
         },
         {
           "name": "program"
+        },
+        {
+          "name": "global_volume_accumulator",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103, 108, 111, 98, 97, 108, 95, 118, 111, 108, 117, 109, 101,
+                  95, 97, 99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_volume_accumulator",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117, 115, 101, 114, 95, 118, 111, 108, 117, 109, 101, 95, 97,
+                  99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
         }
       ],
       "args": [
@@ -137,14 +427,199 @@
       ]
     },
     {
+      "name": "claim_token_incentives",
+      "discriminator": [16, 4, 71, 28, 204, 1, 40, 27],
+      "accounts": [
+        {
+          "name": "user"
+        },
+        {
+          "name": "user_ata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "global_volume_accumulator",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103, 108, 111, 98, 97, 108, 95, 118, 111, 108, 117, 109, 101,
+                  95, 97, 99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_incentive_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "global_volume_accumulator"
+              },
+              {
+                "kind": "account",
+                "path": "token_program"
+              },
+              {
+                "kind": "account",
+                "path": "mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
+              ]
+            }
+          }
+        },
+        {
+          "name": "user_volume_accumulator",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117, 115, 101, 114, 95, 118, 111, 108, 117, 109, 101, 95, 97,
+                  99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "mint",
+          "relations": ["global_volume_accumulator"]
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "close_user_volume_accumulator",
+      "discriminator": [249, 69, 164, 218, 150, 103, 84, 138],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_volume_accumulator",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117, 115, 101, 114, 95, 118, 111, 108, 117, 109, 101, 95, 97,
+                  99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "collect_creator_fee",
-      "docs": ["Collects creator_fee from creator_vault to the coin creator account"],
+      "docs": [
+        "Collects creator_fee from creator_vault to the coin creator account"
+      ],
       "discriminator": [20, 22, 86, 123, 198, 28, 219, 132],
       "accounts": [
         {
           "name": "creator",
-          "writable": true,
-          "signer": true
+          "writable": true
         },
         {
           "name": "creator_vault",
@@ -153,7 +628,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 114, 101, 97, 116, 111, 114, 45, 118, 97, 117, 108, 116]
+                "value": [
+                  99, 114, 101, 97, 116, 111, 114, 45, 118, 97, 117, 108, 116
+                ]
               },
               {
                 "kind": "account",
@@ -172,7 +649,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -199,7 +679,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [109, 105, 110, 116, 45, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  109, 105, 110, 116, 45, 97, 117, 116, 104, 111, 114, 105, 116,
+                  121
+                ]
               }
             ]
           }
@@ -211,7 +694,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101]
+                "value": [
+                  98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101
+                ]
               },
               {
                 "kind": "account",
@@ -232,8 +717,9 @@
               {
                 "kind": "const",
                 "value": [
-                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206, 235, 121, 172, 28, 180, 133, 237, 95,
-                  91, 55, 145, 58, 140, 245, 133, 126, 255, 0, 169
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
                 ]
               },
               {
@@ -244,8 +730,9 @@
             "program": {
               "kind": "const",
               "value": [
-                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142, 13, 131, 11, 90, 19, 153, 218, 255, 16,
-                132, 4, 142, 123, 216, 219, 233, 248, 89
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
               ]
             }
           }
@@ -277,8 +764,9 @@
               {
                 "kind": "const",
                 "value": [
-                  11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107, 4, 195, 205, 88, 184, 108, 115, 26, 160,
-                  253, 181, 73, 182, 209, 188, 3, 248, 41, 70
+                  11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107,
+                  4, 195, 205, 88, 184, 108, 115, 26, 160, 253, 181, 73, 182,
+                  209, 188, 3, 248, 41, 70
                 ]
               },
               {
@@ -319,7 +807,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -370,7 +861,65 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init_user_volume_accumulator",
+      "discriminator": [94, 6, 202, 115, 255, 96, 232, 183],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user"
+        },
+        {
+          "name": "user_volume_accumulator",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117, 115, 101, 114, 95, 118, 111, 108, 117, 109, 101, 95, 97,
+                  99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -412,7 +961,9 @@
     },
     {
       "name": "migrate",
-      "docs": ["Migrates liquidity to pump_amm if the bonding curve is complete"],
+      "docs": [
+        "Migrates liquidity to pump_amm if the bonding curve is complete"
+      ],
       "discriminator": [155, 234, 231, 146, 236, 158, 162, 30],
       "accounts": [
         {
@@ -441,7 +992,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101]
+                "value": [
+                  98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101
+                ]
               },
               {
                 "kind": "account",
@@ -462,8 +1015,9 @@
               {
                 "kind": "const",
                 "value": [
-                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206, 235, 121, 172, 28, 180, 133, 237, 95,
-                  91, 55, 145, 58, 140, 245, 133, 126, 255, 0, 169
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
                 ]
               },
               {
@@ -474,8 +1028,9 @@
             "program": {
               "kind": "const",
               "value": [
-                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142, 13, 131, 11, 90, 19, 153, 218, 255, 16,
-                132, 4, 142, 123, 216, 219, 233, 248, 89
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
               ]
             }
           }
@@ -535,7 +1090,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [112, 111, 111, 108, 45, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  112, 111, 111, 108, 45, 97, 117, 116, 104, 111, 114, 105, 116,
+                  121
+                ]
               },
               {
                 "kind": "account",
@@ -598,7 +1156,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [103, 108, 111, 98, 97, 108, 95, 99, 111, 110, 102, 105, 103]
+                "value": [
+                  103, 108, 111, 98, 97, 108, 95, 99, 111, 110, 102, 105, 103
+                ]
               }
             ],
             "program": {
@@ -618,7 +1178,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [112, 111, 111, 108, 95, 108, 112, 95, 109, 105, 110, 116]
+                "value": [
+                  112, 111, 111, 108, 95, 108, 112, 95, 109, 105, 110, 116
+                ]
               },
               {
                 "kind": "account",
@@ -717,7 +1279,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ],
             "program": {
@@ -732,7 +1297,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -773,7 +1341,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101]
+                "value": [
+                  98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101
+                ]
               },
               {
                 "kind": "account",
@@ -794,8 +1364,9 @@
               {
                 "kind": "const",
                 "value": [
-                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206, 235, 121, 172, 28, 180, 133, 237, 95,
-                  91, 55, 145, 58, 140, 245, 133, 126, 255, 0, 169
+                  6, 221, 246, 225, 215, 101, 161, 147, 217, 203, 225, 70, 206,
+                  235, 121, 172, 28, 180, 133, 237, 95, 91, 55, 145, 58, 140,
+                  245, 133, 126, 255, 0, 169
                 ]
               },
               {
@@ -806,8 +1377,9 @@
             "program": {
               "kind": "const",
               "value": [
-                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142, 13, 131, 11, 90, 19, 153, 218, 255, 16,
-                132, 4, 142, 123, 216, 219, 233, 248, 89
+                140, 151, 37, 143, 78, 36, 137, 241, 187, 61, 16, 41, 20, 142,
+                13, 131, 11, 90, 19, 153, 218, 255, 16, 132, 4, 142, 123, 216,
+                219, 233, 248, 89
               ]
             }
           }
@@ -832,7 +1404,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [99, 114, 101, 97, 116, 111, 114, 45, 118, 97, 117, 108, 116]
+                "value": [
+                  99, 114, 101, 97, 116, 111, 114, 45, 118, 97, 117, 108, 116
+                ]
               },
               {
                 "kind": "account",
@@ -852,7 +1426,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -909,8 +1486,9 @@
               {
                 "kind": "const",
                 "value": [
-                  11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107, 4, 195, 205, 88, 184, 108, 115, 26, 160,
-                  253, 181, 73, 182, 209, 188, 3, 248, 41, 70
+                  11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107,
+                  4, 195, 205, 88, 184, 108, 115, 26, 160, 253, 181, 73, 182,
+                  209, 188, 3, 248, 41, 70
                 ]
               },
               {
@@ -921,8 +1499,9 @@
             "program": {
               "kind": "const",
               "value": [
-                11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107, 4, 195, 205, 88, 184, 108, 115, 26, 160,
-                253, 181, 73, 182, 209, 188, 3, 248, 41, 70
+                11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107, 4,
+                195, 205, 88, 184, 108, 115, 26, 160, 253, 181, 73, 182, 209,
+                188, 3, 248, 41, 70
               ]
             }
           }
@@ -934,7 +1513,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101]
+                "value": [
+                  98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101
+                ]
               },
               {
                 "kind": "account",
@@ -949,7 +1530,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -967,7 +1551,9 @@
     },
     {
       "name": "set_metaplex_creator",
-      "docs": ["Syncs the bonding curve creator with the Metaplex metadata creator if it exists"],
+      "docs": [
+        "Syncs the bonding curve creator with the Metaplex metadata creator if it exists"
+      ],
       "discriminator": [138, 96, 174, 217, 48, 85, 197, 246],
       "accounts": [
         {
@@ -984,8 +1570,9 @@
               {
                 "kind": "const",
                 "value": [
-                  11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107, 4, 195, 205, 88, 184, 108, 115, 26, 160,
-                  253, 181, 73, 182, 209, 188, 3, 248, 41, 70
+                  11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107,
+                  4, 195, 205, 88, 184, 108, 115, 26, 160, 253, 181, 73, 182,
+                  209, 188, 3, 248, 41, 70
                 ]
               },
               {
@@ -996,8 +1583,9 @@
             "program": {
               "kind": "const",
               "value": [
-                11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107, 4, 195, 205, 88, 184, 108, 115, 26, 160,
-                253, 181, 73, 182, 209, 188, 3, 248, 41, 70
+                11, 112, 101, 177, 227, 209, 124, 69, 56, 157, 82, 127, 107, 4,
+                195, 205, 88, 184, 108, 115, 26, 160, 253, 181, 73, 182, 209,
+                188, 3, 248, 41, 70
               ]
             }
           }
@@ -1009,7 +1597,9 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101]
+                "value": [
+                  98, 111, 110, 100, 105, 110, 103, 45, 99, 117, 114, 118, 101
+                ]
               },
               {
                 "kind": "account",
@@ -1024,7 +1614,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -1064,7 +1657,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -1113,8 +1709,72 @@
         {
           "name": "set_creator_authority",
           "type": "pubkey"
+        },
+        {
+          "name": "admin_set_creator_authority",
+          "type": "pubkey"
         }
       ]
+    },
+    {
+      "name": "sync_user_volume_accumulator",
+      "discriminator": [86, 31, 192, 87, 163, 87, 79, 238],
+      "accounts": [
+        {
+          "name": "user"
+        },
+        {
+          "name": "global_volume_accumulator",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103, 108, 111, 98, 97, 108, 95, 118, 111, 108, 117, 109, 101,
+                  95, 97, 99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_volume_accumulator",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117, 115, 101, 114, 95, 118, 111, 108, 117, 109, 101, 95, 97,
+                  99, 99, 117, 109, 117, 108, 97, 116, 111, 114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "event_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "program"
+        }
+      ],
+      "args": []
     },
     {
       "name": "update_global_authority",
@@ -1146,7 +1806,10 @@
             "seeds": [
               {
                 "kind": "const",
-                "value": [95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111, 114, 105, 116, 121]
+                "value": [
+                  95, 95, 101, 118, 101, 110, 116, 95, 97, 117, 116, 104, 111,
+                  114, 105, 116, 121
+                ]
               }
             ]
           }
@@ -1166,9 +1829,37 @@
     {
       "name": "Global",
       "discriminator": [167, 232, 232, 177, 200, 108, 114, 127]
+    },
+    {
+      "name": "GlobalVolumeAccumulator",
+      "discriminator": [202, 42, 246, 43, 142, 190, 30, 255]
+    },
+    {
+      "name": "UserVolumeAccumulator",
+      "discriminator": [86, 255, 112, 14, 102, 53, 154, 250]
     }
   ],
   "events": [
+    {
+      "name": "AdminSetCreatorEvent",
+      "discriminator": [64, 69, 192, 104, 29, 30, 25, 107]
+    },
+    {
+      "name": "AdminSetIdlAuthorityEvent",
+      "discriminator": [245, 59, 70, 34, 75, 185, 109, 92]
+    },
+    {
+      "name": "AdminUpdateTokenIncentivesEvent",
+      "discriminator": [147, 250, 108, 120, 247, 29, 67, 222]
+    },
+    {
+      "name": "ClaimTokenIncentivesEvent",
+      "discriminator": [79, 172, 246, 49, 205, 91, 206, 232]
+    },
+    {
+      "name": "CloseUserVolumeAccumulatorEvent",
+      "discriminator": [146, 159, 189, 172, 146, 88, 56, 244]
+    },
     {
       "name": "CollectCreatorFeeEvent",
       "discriminator": [122, 2, 127, 1, 14, 191, 12, 175]
@@ -1190,6 +1881,10 @@
       "discriminator": [97, 97, 215, 144, 93, 146, 22, 124]
     },
     {
+      "name": "InitUserVolumeAccumulatorEvent",
+      "discriminator": [134, 36, 13, 72, 232, 101, 130, 216]
+    },
+    {
       "name": "SetCreatorEvent",
       "discriminator": [237, 52, 123, 37, 245, 251, 72, 210]
     },
@@ -1200,6 +1895,10 @@
     {
       "name": "SetParamsEvent",
       "discriminator": [223, 195, 159, 246, 62, 48, 143, 131]
+    },
+    {
+      "name": "SyncUserVolumeAccumulatorEvent",
+      "discriminator": [197, 122, 167, 124, 116, 81, 91, 255]
     },
     {
       "name": "TradeEvent",
@@ -1365,9 +2064,125 @@
       "code": 6030,
       "name": "CreatorShouldNotBeZero",
       "msg": "Creator should not be zero"
+    },
+    {
+      "code": 6031,
+      "name": "StartTimeInThePast"
+    },
+    {
+      "code": 6032,
+      "name": "EndTimeInThePast"
+    },
+    {
+      "code": 6033,
+      "name": "EndTimeBeforeStartTime"
+    },
+    {
+      "code": 6034,
+      "name": "TimeRangeTooLarge"
+    },
+    {
+      "code": 6035,
+      "name": "EndTimeBeforeCurrentDay"
+    },
+    {
+      "code": 6036,
+      "name": "SupplyUpdateForFinishedRange"
+    },
+    {
+      "code": 6037,
+      "name": "DayIndexAfterEndIndex"
+    },
+    {
+      "code": 6038,
+      "name": "DayInActiveRange"
+    },
+    {
+      "code": 6039,
+      "name": "InvalidIncentiveMint"
     }
   ],
   "types": [
+    {
+      "name": "AdminSetCreatorEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "admin_set_creator_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "bonding_curve",
+            "type": "pubkey"
+          },
+          {
+            "name": "old_creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "new_creator",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AdminSetIdlAuthorityEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "idl_authority",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AdminUpdateTokenIncentivesEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "start_time",
+            "type": "i64"
+          },
+          {
+            "name": "end_time",
+            "type": "i64"
+          },
+          {
+            "name": "day_number",
+            "type": "u64"
+          },
+          {
+            "name": "token_supply_per_day",
+            "type": "u64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "seconds_in_a_day",
+            "type": "i64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
     {
       "name": "BondingCurve",
       "type": {
@@ -1400,6 +2215,46 @@
           {
             "name": "creator",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ClaimTokenIncentivesEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CloseUserVolumeAccumulatorEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
           }
         ]
       }
@@ -1636,6 +2491,66 @@
           {
             "name": "set_creator_authority",
             "type": "pubkey"
+          },
+          {
+            "name": "admin_set_creator_authority",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GlobalVolumeAccumulator",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "start_time",
+            "type": "i64"
+          },
+          {
+            "name": "end_time",
+            "type": "i64"
+          },
+          {
+            "name": "seconds_in_a_day",
+            "type": "i64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_token_supply",
+            "type": {
+              "array": ["u64", 30]
+            }
+          },
+          {
+            "name": "sol_volumes",
+            "type": {
+              "array": ["u64", 30]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "InitUserVolumeAccumulatorEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "payer",
+            "type": "pubkey"
+          },
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
           }
         ]
       }
@@ -1750,6 +2665,34 @@
           {
             "name": "set_creator_authority",
             "type": "pubkey"
+          },
+          {
+            "name": "admin_set_creator_authority",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SyncUserVolumeAccumulatorEvent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_claimed_tokens_before",
+            "type": "u64"
+          },
+          {
+            "name": "total_claimed_tokens_after",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
           }
         ]
       }
@@ -1846,6 +2789,42 @@
           {
             "name": "timestamp",
             "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserVolumeAccumulator",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "needs_claim",
+            "type": "bool"
+          },
+          {
+            "name": "total_unclaimed_tokens",
+            "type": "u64"
+          },
+          {
+            "name": "total_claimed_tokens",
+            "type": "u64"
+          },
+          {
+            "name": "current_sol_volume",
+            "type": "u64"
+          },
+          {
+            "name": "last_update_timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "has_total_claimed_tokens",
+            "type": "bool"
           }
         ]
       }

@@ -212,6 +212,8 @@ export class TradeModule {
         user: buyer,
         creatorVault,
         eventAuthority,
+        globalVolumeAccumulator: this.sdk.pda.getGlobalVolumeAccumulatorPda(),
+        userVolumeAccumulator: this.sdk.pda.getUserVolumeAccumulatorPda(buyer),
       })
       .instruction();
 

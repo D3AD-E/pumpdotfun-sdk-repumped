@@ -6,6 +6,8 @@ import {
   MINT_AUTHORITY_SEED,
   MPL_TOKEN_METADATA_PROGRAM_ID,
   METADATA_SEED,
+  GLOBAL_VOLUME_SEED,
+  USER_VOLUME_SEED,
 } from "../pumpFun.consts.js";
 import { PumpFunSDK } from "../PumpFunSDK.js";
 
@@ -55,5 +57,19 @@ export class PdaModule {
       metadataProgram
     );
     return metadataPDA;
+  }
+
+  getGlobalVolumeAccumulatorPda(): PublicKey {
+    return PublicKey.findProgramAddressSync(
+      [Buffer.from(GLOBAL_VOLUME_SEED)],
+      this.sdk.program.programId
+    )[0];
+  }
+
+  getUserVolumeAccumulatorPda(user: PublicKey): PublicKey {
+    return PublicKey.findProgramAddressSync(
+      [Buffer.from(USER_VOLUME_SEED), user.toBuffer()],
+      this.sdk.program.programId
+    )[0];
   }
 }

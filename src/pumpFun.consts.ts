@@ -9,6 +9,8 @@ export const MINT_AUTHORITY_SEED = "mint-authority";
 export const BONDING_CURVE_SEED = "bonding-curve";
 export const METADATA_SEED = "metadata";
 export const EVENT_AUTHORITY_SEED = "__event_authority";
+export const GLOBAL_VOLUME_SEED = "global_volume_accumulator";
+export const USER_VOLUME_SEED = "user_volume_accumulator";
 
 export const DEFAULT_DECIMALS = 6;
 
