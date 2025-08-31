@@ -218,6 +218,7 @@ export class TradeModule {
         eventAuthority,
         globalVolumeAccumulator: this.sdk.pda.getGlobalVolumeAccumulatorPda(),
         userVolumeAccumulator: this.sdk.pda.getUserVolumeAccumulatorPda(buyer),
+        feeConfig: this.sdk.pda.getPumpFeeConfigPda(),
       })
       .instruction();
 
@@ -311,6 +312,7 @@ export class TradeModule {
         user: seller,
         creatorVault,
         eventAuthority,
+        feeConfig: this.sdk.pda.getPumpFeeConfigPda(),
       })
       .instruction();
 

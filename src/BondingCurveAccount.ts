@@ -53,7 +53,6 @@ export class BondingCurveAccount {
       virtualSolReserves: this.virtualSolReserves,
       virtualTokenReserves: this.virtualTokenReserves,
     });
-
     const totalFeeBasisPoints =
       protocolFeeBps +
       (!PublicKey.default.equals(this.creator) ? creatorFeeBps : 0n);

@@ -378,8 +378,7 @@
           }
         },
         {
-          "name": "program",
-          "address": "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"
+          "name": "program"
         },
         {
           "name": "global_volume_accumulator",
@@ -451,14 +450,6 @@
         {
           "name": "max_sol_cost",
           "type": "u64"
-        },
-        {
-          "name": "track_volume",
-          "type": {
-            "defined": {
-              "name": "OptionBool"
-            }
-          }
         }
       ]
     },
@@ -588,8 +579,7 @@
           }
         },
         {
-          "name": "program",
-          "address": "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"
+          "name": "program"
         },
         {
           "name": "payer",
@@ -2308,14 +2298,6 @@
           {
             "name": "timestamp",
             "type": "i64"
-          },
-          {
-            "name": "total_claimed_tokens",
-            "type": "u64"
-          },
-          {
-            "name": "current_sol_volume",
-            "type": "u64"
           }
         ]
       }
@@ -2331,22 +2313,6 @@
           },
           {
             "name": "timestamp",
-            "type": "i64"
-          },
-          {
-            "name": "total_unclaimed_tokens",
-            "type": "u64"
-          },
-          {
-            "name": "total_claimed_tokens",
-            "type": "u64"
-          },
-          {
-            "name": "current_sol_volume",
-            "type": "u64"
-          },
-          {
-            "name": "last_update_timestamp",
             "type": "i64"
           }
         ]
@@ -2723,13 +2689,6 @@
       }
     },
     {
-      "name": "OptionBool",
-      "type": {
-        "kind": "struct",
-        "fields": ["bool"]
-      }
-    },
-    {
       "name": "SetCreatorEvent",
       "type": {
         "kind": "struct",
@@ -2939,26 +2898,6 @@
           {
             "name": "creator_fee",
             "type": "u64"
-          },
-          {
-            "name": "track_volume",
-            "type": "bool"
-          },
-          {
-            "name": "total_unclaimed_tokens",
-            "type": "u64"
-          },
-          {
-            "name": "total_claimed_tokens",
-            "type": "u64"
-          },
-          {
-            "name": "current_sol_volume",
-            "type": "u64"
-          },
-          {
-            "name": "last_update_timestamp",
-            "type": "i64"
           }
         ]
       }

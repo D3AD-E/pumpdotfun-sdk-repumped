@@ -129,8 +129,8 @@ export class TokenModule {
       feePda,
       commitment
     );
-
-    return FeeConfig.fromBuffer(tokenAccount!.data);
+    const anchorFee = await this.sdk.program.account.feeConfig.fetch(feePda);
+    return FeeConfig.convert(anchorFee);
   }
 
   async getBondingCurveCreator(

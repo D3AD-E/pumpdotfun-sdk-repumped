@@ -1,7 +1,8 @@
 import { PublicKey } from "@solana/web3.js";
 import { BondingCurveAccount } from "./BondingCurveAccount.js";
-import { Layout, struct, u64, bool, publicKey } from "@coral-xyz/borsh";
+import { Layout, struct, u64, bool, publicKey, array } from "@coral-xyz/borsh";
 import { GlobalAccount } from "./GlobalAccount.js";
+import { BN } from "@coral-xyz/anchor";
 
 export interface CalculatedFeesBps {
   protocolFeeBps: bigint;
@@ -22,6 +23,23 @@ export interface Fees {
   lpFeeBps: bigint;
   protocolFeeBps: bigint;
   creatorFeeBps: bigint;
+}
+
+export interface FeeConfigAnchor {
+  admin: PublicKey;
+  flatFees: FeesAnchor;
+  feeTiers: FeeTierAnchor[];
+}
+
+export interface FeeTierAnchor {
+  marketCapLamportsThreshold: BN;
+  fees: FeesAnchor;
+}
+
+export interface FeesAnchor {
+  lpFeeBps: BN;
+  protocolFeeBps: BN;
+  creatorFeeBps: BN;
 }
 
 export class FeeConfig {
@@ -136,43 +154,29 @@ export class FeeConfig {
     return (a + (b - 1n)) / b;
   }
 
-  public static fromBuffer(buffer: Buffer): FeeConfig {
-    const feeLayout = struct([
-      u64("lpFeeBps"),
-      u64("protocolFeeBps"),
-      u64("creatorFeeBps"),
-    ]);
+  public static convert(base: FeeConfigAnchor): FeeConfig {
+    const flatFees: Fees = {
+      lpFeeBps: BigInt(base.flatFees.lpFeeBps.toString()),
+      protocolFeeBps: BigInt(base.flatFees.protocolFeeBps.toString()),
+      creatorFeeBps: BigInt(base.flatFees.creatorFeeBps.toString()),
+    };
 
-    const feeTierLayout = struct([
-      u64("marketCapLamportsThreshold"),
-      feeLayout.replicate(1, "fees"), // nest fees inside each tier
-    ]);
-
-    const structure = struct([
-      u64("discriminator"),
-      publicKey("admin"),
-      feeLayout.replicate(1, "flatFees"),
-      feeTierLayout.replicate(5, "feeTiers"),
-    ]);
-
-    const value = structure.decode(buffer);
+    const feeTiers: FeeTier[] = base.feeTiers.map((tier) => ({
+      marketCapLamportsThreshold: BigInt(
+        tier.marketCapLamportsThreshold.toString()
+      ),
+      fees: {
+        lpFeeBps: BigInt(tier.fees.lpFeeBps.toString()),
+        protocolFeeBps: BigInt(tier.fees.protocolFeeBps.toString()),
+        creatorFeeBps: BigInt(tier.fees.creatorFeeBps.toString()),
+      },
+    }));
 
     return new FeeConfig(
-      BigInt(value.discriminator),
-      value.admin,
-      {
-        lpFeeBps: BigInt(value.flatFees[0].lpFeeBps),
-        protocolFeeBps: BigInt(value.flatFees[0].protocolFeeBps),
-        creatorFeeBps: BigInt(value.flatFees[0].creatorFeeBps),
-      },
-      value.feeTiers.map((tier: any) => ({
-        marketCapLamportsThreshold: BigInt(tier.marketCapLamportsThreshold),
-        fees: {
-          lpFeeBps: BigInt(tier.fees[0].lpFeeBps),
-          protocolFeeBps: BigInt(tier.fees[0].protocolFeeBps),
-          creatorFeeBps: BigInt(tier.fees[0].creatorFeeBps),
-        },
-      }))
+      0n, // discriminator not available in FeeConfigAnchor
+      base.admin,
+      flatFees,
+      feeTiers
     );
   }
 }
