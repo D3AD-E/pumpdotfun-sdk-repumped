@@ -11,6 +11,10 @@ export class GlobalAccount {
   public initialRealTokenReserves: bigint;
   public tokenTotalSupply: bigint;
   public feeBasisPoints: bigint;
+  public withdrawAuthority: PublicKey;
+  public enableMigrate: boolean = false;
+  public poolMigrationFee: bigint;
+  public creatorFeeBasisPoints: bigint;
 
   constructor(
     discriminator: bigint,
@@ -21,7 +25,11 @@ export class GlobalAccount {
     initialVirtualSolReserves: bigint,
     initialRealTokenReserves: bigint,
     tokenTotalSupply: bigint,
-    feeBasisPoints: bigint
+    feeBasisPoints: bigint,
+    withdrawAuthority: PublicKey,
+    enableMigrate: boolean,
+    poolMigrationFee: bigint,
+    creatorFeeBasisPoints: bigint
   ) {
     this.discriminator = discriminator;
     this.initialized = initialized;
@@ -32,6 +40,10 @@ export class GlobalAccount {
     this.initialRealTokenReserves = initialRealTokenReserves;
     this.tokenTotalSupply = tokenTotalSupply;
     this.feeBasisPoints = feeBasisPoints;
+    this.withdrawAuthority = withdrawAuthority;
+    this.enableMigrate = enableMigrate;
+    this.poolMigrationFee = poolMigrationFee;
+    this.creatorFeeBasisPoints = creatorFeeBasisPoints;
   }
 
   getInitialBuyPrice(amount: bigint): bigint {
@@ -59,6 +71,10 @@ export class GlobalAccount {
       u64("initialRealTokenReserves"),
       u64("tokenTotalSupply"),
       u64("feeBasisPoints"),
+      publicKey("withdrawAuthority"),
+      bool("enableMigrate"),
+      u64("poolMigrationFee"),
+      u64("creatorFeeBasisPoints"),
     ]);
 
     let value = structure.decode(buffer);
@@ -71,7 +87,11 @@ export class GlobalAccount {
       BigInt(value.initialVirtualSolReserves),
       BigInt(value.initialRealTokenReserves),
       BigInt(value.tokenTotalSupply),
-      BigInt(value.feeBasisPoints)
+      BigInt(value.feeBasisPoints),
+      value.withdrawAuthority,
+      value.enableMigrate,
+      BigInt(value.poolMigrationFee),
+      BigInt(value.creatorFeeBasisPoints)
     );
   }
 }

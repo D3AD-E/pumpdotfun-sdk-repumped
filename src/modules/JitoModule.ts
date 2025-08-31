@@ -56,7 +56,13 @@ export class JitoModule {
       throw new Error(`Bonding curve account not found: ${mint.toBase58()}`);
     }
 
-    const buyAmount = bondingAccount.getBuyPrice(buyAmountSol);
+    const feeConfig = await this.sdk.token.getFeeConfig(commitment);
+    const globalAccount = await this.sdk.token.getGlobalAccount(commitment);
+    const buyAmount = bondingAccount.getBuyPrice(
+      globalAccount,
+      feeConfig,
+      buyAmountSol
+    );
     const buyAmountWithSlippage = calculateWithSlippageBuy(
       buyAmountSol,
       slippageBasisPoints
@@ -101,10 +107,11 @@ export class JitoModule {
       throw new Error(`Bonding curve account not found: ${mint.toBase58()}`);
 
     const globalAccount = await this.sdk.token.getGlobalAccount(commitment);
-
+    const feeConfig = await this.sdk.token.getFeeConfig(commitment);
     const minSolOutput = bondingAccount.getSellPrice(
-      sellTokenAmount,
-      globalAccount.feeBasisPoints
+      globalAccount,
+      feeConfig,
+      sellTokenAmount
     );
     let sellAmountWithSlippage = calculateWithSlippageSell(
       minSolOutput,

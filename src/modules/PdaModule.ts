@@ -8,6 +8,8 @@ import {
   METADATA_SEED,
   GLOBAL_VOLUME_SEED,
   USER_VOLUME_SEED,
+  PUMP_PROGRAM_ID,
+  PUMP_FEE_PROGRAM_ID,
 } from "../pumpFun.consts.js";
 import { PumpFunSDK } from "../PumpFunSDK.js";
 
@@ -46,6 +48,13 @@ export class PdaModule {
     return PublicKey.findProgramAddressSync(
       [Buffer.from(MINT_AUTHORITY_SEED)],
       this.sdk.program.programId
+    )[0];
+  }
+
+  getPumpFeeConfigPda(): PublicKey {
+    return PublicKey.findProgramAddressSync(
+      [Buffer.from("fee_config"), PUMP_PROGRAM_ID.toBuffer()],
+      PUMP_FEE_PROGRAM_ID
     )[0];
   }
 

@@ -8,7 +8,8 @@ import { DEFAULT_COMMITMENT } from "../pumpFun.consts.js";
 import { CreateTokenMetadata } from "../pumpFun.types.js";
 import { PumpFunSDK } from "../PumpFunSDK.js";
 import { BondingCurveAccount } from "../BondingCurveAccount.js";
-import { GlobalAccount } from "../globalAccount.js";
+import { GlobalAccount } from "../GlobalAccount.js";
+import { FeeConfig } from "../FeeConfig.js";
 
 export class TokenModule {
   constructor(private sdk: PumpFunSDK) {}
@@ -119,6 +120,17 @@ export class TokenModule {
     );
 
     return GlobalAccount.fromBuffer(tokenAccount!.data);
+  }
+
+  async getFeeConfig(commitment: Commitment = DEFAULT_COMMITMENT) {
+    const feePda = this.sdk.pda.getPumpFeeConfigPda();
+
+    const tokenAccount = await this.sdk.connection.getAccountInfo(
+      feePda,
+      commitment
+    );
+
+    return FeeConfig.fromBuffer(tokenAccount!.data);
   }
 
   async getBondingCurveCreator(

@@ -9,7 +9,7 @@ export * from "./modules/AstraModule.js";
 export * from "./modules/NextBlockModule.js";
 
 export * from "./BondingCurveAccount.js";
-export * from "./globalAccount.js";
+export * from "./GlobalAccount.js";
 export * from "./slippage.js";
 export * from "./tx.js";
 

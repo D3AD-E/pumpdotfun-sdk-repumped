@@ -1,4 +1,4 @@
-import { Commitment, Finality } from "@solana/web3.js";
+import { Commitment, Finality, PublicKey } from "@solana/web3.js";
 import { Region } from "./pumpFun.types.js";
 
 export const MPL_TOKEN_METADATA_PROGRAM_ID =
@@ -11,7 +11,12 @@ export const METADATA_SEED = "metadata";
 export const EVENT_AUTHORITY_SEED = "__event_authority";
 export const GLOBAL_VOLUME_SEED = "global_volume_accumulator";
 export const USER_VOLUME_SEED = "user_volume_accumulator";
-
+export const PUMP_PROGRAM_ID = new PublicKey(
+  "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"
+);
+export const PUMP_FEE_PROGRAM_ID = new PublicKey(
+  "pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ"
+);
 export const DEFAULT_DECIMALS = 6;
 
 export const DEFAULT_COMMITMENT: Commitment = "finalized";

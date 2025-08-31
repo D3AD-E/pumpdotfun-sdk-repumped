@@ -7,7 +7,7 @@ import {
   Transaction,
   PublicKey,
 } from "@solana/web3.js";
-import { GlobalAccount } from "../globalAccount.js";
+import { GlobalAccount } from "../GlobalAccount.js";
 
 import { DEFAULT_COMMITMENT, DEFAULT_FINALITY } from "../pumpFun.consts.js";
 import {
@@ -94,7 +94,13 @@ export class TradeModule {
       throw new Error(`Bonding curve account not found: ${mint.toBase58()}`);
     }
 
-    const buyAmount = bondingAccount.getBuyPrice(buyAmountSol);
+    const feeConfig = await this.sdk.token.getFeeConfig(commitment);
+    const globalAccount = await this.sdk.token.getGlobalAccount(commitment);
+    const buyAmount = bondingAccount.getBuyPrice(
+      globalAccount,
+      feeConfig,
+      buyAmountSol
+    );
     const buyAmountWithSlippage = calculateWithSlippageBuy(
       buyAmountSol,
       slippageBasisPoints
@@ -137,7 +143,13 @@ export class TradeModule {
       throw new Error(`Bonding curve account not found: ${mint.toBase58()}`);
     }
 
-    const buyAmount = bondingCurveAccount.getBuyPrice(buyAmountSol);
+    const feeConfig = await this.sdk.token.getFeeConfig(commitment);
+    const globalAccount = await this.sdk.token.getGlobalAccount(commitment);
+    const buyAmount = bondingCurveAccount.getBuyPrice(
+      globalAccount,
+      feeConfig,
+      buyAmountSol
+    );
     const buyAmountWithSlippage = calculateWithSlippageBuy(
       buyAmountSol,
       slippageBasisPoints
@@ -181,16 +193,8 @@ export class TradeModule {
         tx,
         commitment
       );
-
-    const globalPda = this.sdk.pda.getGlobalAccountPda();
-    const globalAccBuf = await this.sdk.connection.getAccountInfo(
-      globalPda,
-      commitment
-    );
-    const feeRecipient = GlobalAccount.fromBuffer(
-      globalAccBuf!.data
-    ).feeRecipient;
-
+    const globalAccount = await this.sdk.token.getGlobalAccount(commitment);
+    const globalAccountPDA = this.sdk.pda.getGlobalAccountPda();
     const bondingCreator = shouldUseBuyerAsBonding
       ? this.sdk.pda.getCreatorVaultPda(buyer)
       : await this.sdk.token.getBondingCurveCreator(bondingCurve, commitment);
@@ -203,8 +207,8 @@ export class TradeModule {
     const ix = await this.sdk.program.methods
       .buy(new BN(amount.toString()), new BN(maxSolCost.toString()))
       .accounts({
-        global: globalPda,
-        feeRecipient,
+        global: globalAccountPDA,
+        feeRecipient: globalAccount.feeRecipient,
         mint,
         bondingCurve,
         associatedBondingCurve: associatedBonding,
@@ -331,9 +335,12 @@ export class TradeModule {
 
     const globalAccount = await this.sdk.token.getGlobalAccount(commitment);
 
+    const feeConfig = await this.sdk.token.getFeeConfig(commitment);
+
     const minSolOutput = bondingAccount.getSellPrice(
-      sellTokenAmount,
-      globalAccount.feeBasisPoints
+      globalAccount,
+      feeConfig,
+      sellTokenAmount
     );
     let sellAmountWithSlippage = calculateWithSlippageSell(
       minSolOutput,
@@ -377,9 +384,12 @@ export class TradeModule {
       throw new Error(`Bonding curve account not found: ${mint.toBase58()}`);
 
     const globalAccount = await this.sdk.token.getGlobalAccount(commitment);
+    const feeConfig = await this.sdk.token.getFeeConfig(commitment);
+
     const minSolOutput = bondingAccount.getSellPrice(
-      sellTokenAmount,
-      globalAccount.feeBasisPoints
+      globalAccount,
+      feeConfig,
+      sellTokenAmount
     );
     let sellAmountWithSlippage = calculateWithSlippageSell(
       minSolOutput,

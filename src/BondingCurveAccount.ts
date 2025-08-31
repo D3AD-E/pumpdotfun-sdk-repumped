@@ -1,4 +1,7 @@
-import { struct, bool, u64, Layout } from "@coral-xyz/borsh";
+import { struct, bool, u64, Layout, publicKey } from "@coral-xyz/borsh";
+import { PublicKey } from "@solana/web3.js";
+import { FeeConfig } from "./FeeConfig.js";
+import { GlobalAccount } from "./GlobalAccount.js";
 
 export class BondingCurveAccount {
   public discriminator: bigint;
@@ -8,6 +11,7 @@ export class BondingCurveAccount {
   public realSolReserves: bigint;
   public tokenTotalSupply: bigint;
   public complete: boolean;
+  public creator: PublicKey;
 
   constructor(
     discriminator: bigint,
@@ -16,7 +20,8 @@ export class BondingCurveAccount {
     realTokenReserves: bigint,
     realSolReserves: bigint,
     tokenTotalSupply: bigint,
-    complete: boolean
+    complete: boolean,
+    creator: PublicKey
   ) {
     this.discriminator = discriminator;
     this.virtualTokenReserves = virtualTokenReserves;
@@ -25,9 +30,14 @@ export class BondingCurveAccount {
     this.realSolReserves = realSolReserves;
     this.tokenTotalSupply = tokenTotalSupply;
     this.complete = complete;
+    this.creator = creator;
   }
 
-  getBuyPrice(amount: bigint): bigint {
+  getBuyPrice(
+    globalAccount: GlobalAccount,
+    feeConfig: FeeConfig,
+    amount: bigint
+  ): bigint {
     if (this.complete) {
       throw new Error("Curve is complete");
     }
@@ -35,24 +45,65 @@ export class BondingCurveAccount {
     if (amount <= 0n) {
       return 0n;
     }
+    if (this.virtualTokenReserves === 0n) {
+      return 0n;
+    }
+    const { protocolFeeBps, creatorFeeBps } = feeConfig.computeFeesBps({
+      global: globalAccount,
+      virtualSolReserves: this.virtualSolReserves,
+      virtualTokenReserves: this.virtualTokenReserves,
+    });
 
-    // Calculate the product of virtual reserves
-    let n = this.virtualSolReserves * this.virtualTokenReserves;
+    const totalFeeBasisPoints =
+      protocolFeeBps +
+      (!PublicKey.default.equals(this.creator) ? creatorFeeBps : 0n);
 
-    // Calculate the new virtual sol reserves after the purchase
-    let i = this.virtualSolReserves + amount;
+    const inputAmount = (amount * 10_000n) / (totalFeeBasisPoints + 10_000n);
 
-    // Calculate the new virtual token reserves after the purchase
-    let r = n / i + 1n;
+    const tokensReceived = this.getBuyTokenAmountFromSolAmountQuote({
+      inputAmount,
+      virtualTokenReserves: this.virtualTokenReserves,
+      virtualSolReserves: this.virtualSolReserves,
+    });
 
-    // Calculate the amount of tokens to be purchased
-    let s = this.virtualTokenReserves - r;
-
-    // Return the minimum of the calculated tokens and real token reserves
-    return s < this.realTokenReserves ? s : this.realTokenReserves;
+    return tokensReceived < this.realTokenReserves
+      ? tokensReceived
+      : this.realTokenReserves;
   }
 
-  getSellPrice(amount: bigint, feeBasisPoints: bigint): bigint {
+  getBuyTokenAmountFromSolAmountQuote({
+    inputAmount,
+    virtualTokenReserves,
+    virtualSolReserves,
+  }: {
+    inputAmount: bigint;
+    virtualTokenReserves: bigint;
+    virtualSolReserves: bigint;
+  }): bigint {
+    return (
+      (inputAmount * virtualTokenReserves) / (virtualSolReserves + inputAmount)
+    );
+  }
+
+  getSellSolAmountFromTokenAmountQuote({
+    inputAmount,
+    virtualTokenReserves,
+    virtualSolReserves,
+  }: {
+    inputAmount: bigint;
+    virtualTokenReserves: bigint;
+    virtualSolReserves: bigint;
+  }): bigint {
+    return (
+      (inputAmount * virtualSolReserves) / (virtualTokenReserves + inputAmount)
+    );
+  }
+
+  getSellPrice(
+    globalAccount: GlobalAccount,
+    feeConfig: FeeConfig,
+    amount: bigint
+  ): bigint {
     if (this.complete) {
       throw new Error("Curve is complete");
     }
@@ -60,16 +111,22 @@ export class BondingCurveAccount {
     if (amount <= 0n) {
       return 0n;
     }
+    if (this.virtualTokenReserves === 0n) {
+      return 0n;
+    }
+    const solCost = this.getSellSolAmountFromTokenAmountQuote({
+      inputAmount: amount,
+      virtualTokenReserves: this.virtualTokenReserves,
+      virtualSolReserves: this.virtualSolReserves,
+    });
 
-    // Calculate the proportional amount of virtual sol reserves to be received
-    let n =
-      (amount * this.virtualSolReserves) / (this.virtualTokenReserves + amount);
-
-    // Calculate the fee amount in the same units
-    let a = (n * feeBasisPoints) / 10000n;
-
-    // Return the net amount after deducting the fee
-    return n - a;
+    const fee = feeConfig.getFee({
+      global: globalAccount,
+      bondingCurve: this,
+      amount: solCost,
+      isNewBondingCurve: false,
+    });
+    return solCost - fee;
   }
 
   getMarketCapSOL(): bigint {
@@ -83,30 +140,8 @@ export class BondingCurveAccount {
     );
   }
 
-  getFinalMarketCapSOL(feeBasisPoints: bigint): bigint {
-    let totalSellValue = this.getBuyOutPrice(
-      this.realTokenReserves,
-      feeBasisPoints
-    );
-    let totalVirtualValue = this.virtualSolReserves + totalSellValue;
-    let totalVirtualTokens = this.virtualTokenReserves - this.realTokenReserves;
-
-    if (totalVirtualTokens === 0n) {
-      return 0n;
-    }
-
-    return (this.tokenTotalSupply * totalVirtualValue) / totalVirtualTokens;
-  }
-
-  getBuyOutPrice(amount: bigint, feeBasisPoints: bigint): bigint {
-    let solTokens =
-      amount < this.virtualTokenReserves ? this.virtualTokenReserves : amount;
-    let totalSellValue =
-      (solTokens * this.virtualSolReserves) /
-        (this.virtualTokenReserves - solTokens) +
-      1n;
-    let fee = (totalSellValue * feeBasisPoints) / 10000n;
-    return totalSellValue + fee;
+  getFinalMarketCapSOL(mintSupply: bigint): bigint {
+    return (this.virtualSolReserves * mintSupply) / this.virtualTokenReserves;
   }
 
   public static fromBuffer(buffer: Buffer): BondingCurveAccount {
@@ -118,6 +153,7 @@ export class BondingCurveAccount {
       u64("realSolReserves"),
       u64("tokenTotalSupply"),
       bool("complete"),
+      publicKey("creator"),
     ]);
 
     let value = structure.decode(buffer);
@@ -128,7 +164,8 @@ export class BondingCurveAccount {
       BigInt(value.realTokenReserves),
       BigInt(value.realSolReserves),
       BigInt(value.tokenTotalSupply),
-      value.complete
+      value.complete,
+      value.creator
     );
   }
 }
