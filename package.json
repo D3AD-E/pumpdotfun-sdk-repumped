@@ -1,6 +1,6 @@
 {
   "name": "pumpdotfun-repumped-sdk",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Pumpfun SDK — create, buy, sell tokens with support for Jito bundles and multiple relayer integrations. Rebuilt and fixed pumpdotfun-sdk.",
   "author": "D3AD-E <evg.gordi@gmail.com>",
   "license": "MIT",
@@ -43,8 +43,6 @@
     "@solana/spl-token": "^0.4.13",
     "@solana/web3.js": "^1.98.2",
     "bn.js": "^5.2.2",
-    "http": "^0.0.1-security",
-    "https": "^1.0.0",
     "jito-ts": "^4.2.0"
   },
   "devDependencies": {

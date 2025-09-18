@@ -124,11 +124,6 @@ export class TokenModule {
 
   async getFeeConfig(commitment: Commitment = DEFAULT_COMMITMENT) {
     const feePda = this.sdk.pda.getPumpFeeConfigPda();
-
-    const tokenAccount = await this.sdk.connection.getAccountInfo(
-      feePda,
-      commitment
-    );
     const anchorFee = await this.sdk.program.account.feeConfig.fetch(feePda);
     return FeeConfig.convert(anchorFee);
   }
