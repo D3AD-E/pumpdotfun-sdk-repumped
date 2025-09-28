@@ -17,7 +17,7 @@ async function printSOL(conn: Connection, pk: PublicKey, label = "") {
 }
 
 const DEVNET_RPC = "https://api.devnet.solana.com";
-const SLIPPAGE_BPS = 100n;
+const SLIPPAGE_BPS = 1000n;
 const PRIORITY = { unitLimit: 250_000, unitPrice: 250_000 }; // devnet tip
 
 async function main() {
